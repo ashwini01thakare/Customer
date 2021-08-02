@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<configuration-properties doc:name="Configuration properties" doc:id="8eccc863-4e71-474c-a7dc-67eb55b17caf" file="Cust.yaml" />
+	<configuration doc:name="Configuration" doc:id="45167709-3aaa-4821-b08b-a49c93ad0c6e" defaultErrorHandler-ref="globalError_Handler" />
+	<error-handler name="globalError_Handler" doc:id="e77bdd8c-8f68-4936-8d4e-4b6d03d150ef" >
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="1972c127-6d87-4d40-8ec0-caeebb53ae7e" type="EXPRESSION">
+			<set-payload value='#[Error: "Only correct details allowed"]' doc:name="Set Payload" doc:id="23f1f4b3-3977-402d-b8b8-e8d73e58d5ca" />
+		</on-error-continue>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="a6f1ca46-71b6-4d6a-887d-08b233c8716e" type="ANY">
+			<set-payload value='#[Error: "Wrong information"]' doc:name="Set Payload" doc:id="ce133126-17f0-4253-bf8f-3be92e1c0fd8" />
+		</on-error-propagate>
+	</error-handler>
+
+	 <http:listener-config name="customers-api-httpListenerConfig">
+        <http:listener-connection host="0.0.0.0" port="8081" />
+    </http:listener-config>
+    
+    <db:config name="Database_Config" doc:name="Database Config" doc:id="8bbc288f-f0f2-4b5d-8e1e-6e8d9326136f" >
+		<db:my-sql-connection host="${db.host}" port="${db.port}" user="${db.user}" password="${db.password}" database="${db.database}" />
+	</db:config>
+
+
+
+
+</mule>

@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="Customers_String" format="json">
+      <types:shape format="weave" example="examples/Customers_String.JSON"><![CDATA[%dw 2.0
+
+type Customers_String = {|
+  customerId: String, 
+  customerName: String, 
+  contactNumber: Number {"typeId": "double"}, 
+  address: String, 
+  city: String, 
+  state: String
+|} {"example": "{\\\"customerId\\\":\\\"CI1001\\\",\\\"customerName\\\":\\\"Josi Mathew\\\",\\\"contactNumber\\\":9988776655,\\\"address\\\":\\\"498 Fowler Avenue\\\",\\\"city\\\":\\\"Jonesboro\\\",\\\"state\\\":\\\"Georgia\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="Customer_Array" format="json">
+      <types:shape format="weave" example="examples/customers_Array.JSON"><![CDATA[%dw 2.0
+
+type Customer_Array = Array<{|  customerId: String,   customerName: String,   contactNumber: Number {"typeId": "double"},   address: String,   city: String,   state: String|}> {"example": "[{\\\"customerId\\\":\\\"CI1001\\\",\\\"customerName\\\":\\\"Josi Mathew\\\",\\\"contactNumber\\\":9988776655,\\\"address\\\":\\\"498 Fowler Avenue\\\",\\\"city\\\":\\\"Jonesboro\\\",\\\"state\\\":\\\"Georgia\\\"},{\\\"customerId\\\":\\\"CI1002\\\",\\\"customerName\\\":\\\"Charlie Harper\\\",\\\"contactNumber\\\":8877665544,\\\"address\\\":\\\"109 Blackwell Street\\\",\\\"city\\\":\\\"Anchorage\\\",\\\"state\\\":\\\"Alaska\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#c1c05dae-7e6d-4aeb-a4e4-e5f1cb71f2cb">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="Customers_String"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#f276aa00-a3f1-485d-b3e6-9ee1e1006155">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="Customer_Array"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#9161adce-c6a9-4260-91a4-194f9cdfb833">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="Customer_Array"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>
